@@ -12,7 +12,7 @@ source.include_exts = py,txt
 
 version = 1.0.0
 
-requirements = python3==3.11.8,kivy==2.3.0,requests
+requirements = python3==3.11.8,hostpython3==3.11.8,kivy==2.3.0,requests
 
 orientation = portrait
 
