@@ -30,7 +30,7 @@ android.accept_sdk_license = True
 
 android.ndk = 25b
 
-p4a.branch = 2024.01.21
+p4a.branch = v2024.01.21
 
 [buildozer]
 
