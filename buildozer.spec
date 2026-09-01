@@ -12,7 +12,7 @@ source.include_exts = py,txt
 
 version = 1.0.0
 
-requirements = python3,kivy,requests
+requirements = python3,kivy==2.3.0,requests,cython==0.29.33
 
 orientation = portrait
 
@@ -27,6 +27,8 @@ android.archs = arm64-v8a, armeabi-v7a
 android.permissions = INTERNET
 
 android.accept_sdk_license = True
+
+android.ndk = 25b
 
 [buildozer]
 
