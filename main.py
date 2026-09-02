@@ -174,8 +174,10 @@ class 股票分析APP(App):
 
         except Exception as e:
 
+            錯誤訊息 = str(e)
+
             Clock.schedule_once(
-                lambda dt: self.顯示錯誤(str(e))
+                lambda dt: self.顯示錯誤(錯誤訊息)
             )
 
     def 增加文字(self, 文字, 大小=17, 高度=40):
