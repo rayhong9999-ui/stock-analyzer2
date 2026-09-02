@@ -23,18 +23,50 @@ from scoring import analyze_stock
 # 依常見 Android 版本／廠牌列出幾個常見路徑輪流嘗試。
 # ─────────────────────────────────────────────
 _CJK_FONT_CANDIDATES = [
-    "/system/fonts/NotoSansCJK-Regular.ttc",
-    "/system/fonts/NotoSansCJK-Regular.ttf",
-    "/system/fonts/NotoSansSC-Regular.otf",
-    "/system/fonts/DroidSansFallback.ttf",
+    # 一般單一字型檔優先（.ttc 多字型合集檔容易讓 Kivy 算錯文字寬度、疊字）
     "/system/fonts/DroidSansFallbackFull.ttf",
+    "/system/fonts/DroidSansFallback.ttf",
+    "/system/fonts/NotoSansSC-Regular.otf",
+    "/system/fonts/NotoSansCJK-Regular.ttf",
     "/system/fonts/MiSans-Regular.ttf",
+    # 最後才嘗試 .ttc（合集檔，可能疊字，但總比方框好）
+    "/system/fonts/NotoSansCJK-Regular.ttc",
 ]
 
 for _font_path in _CJK_FONT_CANDIDATES:
     if os.path.exists(_font_path):
         LabelBase.register(name="Roboto", fn_regular=_font_path)
         break
+
+
+# ─────────────────────────────────────────────
+# 全域安全網：任何沒被 try/except 接住的例外，
+# 一律導向這裡處理，不讓整個 App 直接關閉消失。
+# ─────────────────────────────────────────────
+from kivy.base import ExceptionManager, ExceptionHandler
+import traceback
+
+
+class _安全網(ExceptionHandler):
+    def handle_exception(self, inst):
+        try:
+            錯誤內容 = "".join(
+                traceback.format_exception(type(inst), inst, inst.__traceback__)
+            )
+        except Exception:
+            錯誤內容 = str(inst)
+
+        app = App.get_running_app()
+        if app is not None and hasattr(app, "顯示錯誤"):
+            try:
+                Clock.schedule_once(lambda dt: app.顯示錯誤(錯誤內容))
+            except Exception:
+                pass
+
+        return ExceptionManager.PASS
+
+
+ExceptionManager.add_handler(_安全網())
 
 
 class 股票分析APP(App):
