@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import requests
 
 
-USER_AGENT = "Mozilla/5.0 股票三面向分析器"
+USER_AGENT = "Mozilla/5.0 (Android) StockAnalyzer/1.0"
 TIMEOUT = 15
 
 
