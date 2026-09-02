@@ -1,9 +1,11 @@
+import os
 import threading
 from datetime import datetime
 
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.metrics import dp
+from kivy.core.text import LabelBase
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
@@ -12,6 +14,27 @@ from kivy.uix.button import Button
 from kivy.uix.scrollview import ScrollView
 
 from scoring import analyze_stock
+
+
+# ─────────────────────────────────────────────
+# 中文字型支援
+# Kivy 內建字型不含中文字，在 Android 上會顯示成方框，
+# 這裡改用手機系統內建的中文字型，不用額外包字型檔。
+# 依常見 Android 版本／廠牌列出幾個常見路徑輪流嘗試。
+# ─────────────────────────────────────────────
+_CJK_FONT_CANDIDATES = [
+    "/system/fonts/NotoSansCJK-Regular.ttc",
+    "/system/fonts/NotoSansCJK-Regular.ttf",
+    "/system/fonts/NotoSansSC-Regular.otf",
+    "/system/fonts/DroidSansFallback.ttf",
+    "/system/fonts/DroidSansFallbackFull.ttf",
+    "/system/fonts/MiSans-Regular.ttf",
+]
+
+for _font_path in _CJK_FONT_CANDIDATES:
+    if os.path.exists(_font_path):
+        LabelBase.register(name="Roboto", fn_regular=_font_path)
+        break
 
 
 class 股票分析APP(App):
